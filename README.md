@@ -44,3 +44,30 @@ python evaluate_task_metrics.py outputs/nuosugpt_predictions.csv \
 ```
 
 `metrics_output/metrics_summary.json` contains the final summary, while `metrics_output/per_sample_metrics.csv` stores per-sample scores.
+
+## 3. Hosted API inference
+
+The API mode does not require reviewers to download the base model or LoRA weights. The server should accept a JSON `POST` request with the following fields:
+
+```json
+{
+  "question": "Instruction: ...",
+  "image": "data:image/png;base64,...",
+  "max_new_tokens": 512
+}
+```
+
+It should return `answer` (or `model_answer`), `route` (or `final_route`), and optionally `cosine_score` and `class_threshold`. The API client writes the returned answers to the same CSV format used by the metric evaluator:
+
+```bash
+python api_client_inference.py \
+  --api-url https://your-anonymous-api.example/v1/inference \
+  --api-key YOUR_API_TOKEN \
+  --dataset /path/to/your/evaluation_dataset.json \
+  --output outputs/nuosugpt_api_predictions.csv
+
+python evaluate_task_metrics.py outputs/nuosugpt_api_predictions.csv \
+  --task-counts <ocr_count>,<translation_count>,<dialogue_count>
+```
+
+The API server, base model, Router checkpoint, and LoRA adapters are not included in this repository.
