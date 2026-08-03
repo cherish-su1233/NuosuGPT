@@ -36,6 +36,11 @@ python run_nuosugpt_inference.py \
 python evaluate_task_metrics.py outputs/nuosugpt_predictions.csv
 ```
 
-The default 891-sample split is fixed as 303 Yi OCR samples, 305 Chinese-Yi translation samples, and 283 Yi dialogue samples. Metrics are Exact Accuracy and CER for OCR; character-level BLEU-4, Exact Accuracy, and CER for translation; and character-level ROUGE-L F1 and CER for dialogue.
+The evaluator computes task-specific metrics from the generated answers and their references. For Yi OCR, it reports Exact Accuracy and character error rate (CER). For Chinese-Yi translation, it reports character-level BLEU-4, Exact Accuracy, and CER. For Yi dialogue, it reports character-level ROUGE-L F1 and CER. Specify the number of OCR, translation, and dialogue samples in the input order when evaluating a custom split:
+
+```bash
+python evaluate_task_metrics.py outputs/nuosugpt_predictions.csv \
+  --task-counts <ocr_count>,<translation_count>,<dialogue_count>
+```
 
 `metrics_output/metrics_summary.json` contains the final summary, while `metrics_output/per_sample_metrics.csv` stores per-sample scores.
