@@ -1,0 +1,7 @@
+accelerate>=1.0
+pandas>=2.0
+peft>=0.13
+qwen-vl-utils>=0.0.8
+torch>=2.1
+tqdm>=4.66
+transformers>=4.50
